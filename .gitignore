@@ -1,0 +1,26 @@
+# Agent & AI
+.agents/
+.gemini/
+
+# Environment Variables
+.env
+.env.local
+
+# Dependency Directories
+vendor/
+node_modules/
+
+# Databases
+*.sqlite
+*.sqlite3
+*.db
+database/*.sqlite
+
+# Logs
+*.log
+
+# IDEs & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
