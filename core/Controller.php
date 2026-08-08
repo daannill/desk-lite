@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core;
 
 class Controller {
 
     protected array $middleware = [];
 
-    public function runMiddleware(string $method) {
+    public function runMiddleware(string $method): void {
         if (Request::isPost()) {
             Middleware::validateCsrf();
         }
@@ -30,10 +32,8 @@ class Controller {
         }
     }
     
-    protected function view(string $view, array $data = []) {
-        extract($data);
-
-        require "app/views/$view.php";
+    protected function view(string $view, array $data = []): void {
+        View::getInstance()->render($view, $data);
 
         Old::clear();
         Flash::clear();
