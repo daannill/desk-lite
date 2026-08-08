@@ -1,0 +1,29 @@
+{
+  "name": "desklite",
+  "version": "1.0.0",
+  "description": "DeskLite adalah aplikasi web modern menggunakan PHP 8.2+ dengan Custom MVC tanpa framework yang berat.",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i public/css/input.css -o public/css/style.css",
+    "watch:css": "npx @tailwindcss/cli -i public/css/input.css -o public/css/style.css --watch",
+    "copy:js": "node -e \"const fs = require('fs'); if (!fs.existsSync('public/js')) fs.mkdirSync('public/js', { recursive: true }); fs.copyFileSync('node_modules/htmx.org/dist/htmx.min.js', 'public/js/htmx.min.js'); fs.copyFileSync('node_modules/alpinejs/dist/cdn.min.js', 'public/js/alpine.min.js');\"",
+    "build": "npm run build:css && npm run copy:js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daannill/desk-lite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daannill/desk-lite/issues"
+  },
+  "homepage": "https://github.com/daannill/desk-lite#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "alpinejs": "^3.15.12",
+    "htmx.org": "^2.0.10"
+  }
+}

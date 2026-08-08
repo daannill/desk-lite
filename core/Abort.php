@@ -13,10 +13,10 @@ class Abort {
 
         http_response_code($code);
 
-        $view = "app/views/errors/$code.php";
+        $view = APP_PATH . "/app/views/errors/$code.php";
 
         if (!file_exists($view)) {
-            $view = 'app/views/errors/500.php';
+            $view = APP_PATH . '/app/views/errors/500.php';
         }
 
         require $view;
