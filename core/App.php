@@ -5,7 +5,7 @@ namespace Core;
 class App {
 
     public function __construct() {
-        require 'routes/web.php';
+        require APP_PATH . '/routes/web.php';
 
         $url = trim($_GET['url'] ?? '', '/');
         $requestMethod = Request::method();

@@ -20,9 +20,9 @@ DeskLite adalah aplikasi web modern menggunakan PHP 8.2+ dengan Custom MVC tanpa
    npm.cmd run build
    # Atau untuk mode watch CSS: npm.cmd run watch:css
    ```
-5. Jalankan aplikasi menggunakan local server pilihan Anda (misal: XAMPP) atau jalankan built-in server PHP:
+5. Jalankan aplikasi menggunakan local server pilihan Anda (misal: XAMPP) dengan menunjuk dokumen root ke `public/`, atau jalankan built-in server PHP:
    ```bash
-   php -S localhost:8000
+   php -S localhost:8000 -t public
    ```
 
 ## Fitur Utama & Arsitektur
