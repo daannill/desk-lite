@@ -15,12 +15,24 @@ DeskLite adalah aplikasi web modern menggunakan PHP 8.2+ dengan Custom MVC tanpa
    ```
 3. Sesuaikan konfigurasi di `.env` (default dev menggunakan SQLite di `database/database.sqlite`).
 4. Install dependensi Node.js & build frontend assets (Tailwind v4, Alpine.js, HTMX):
+
+   **Bash (Linux/macOS/Git Bash):**
    ```bash
-   npm.cmd install
-   npm.cmd run build
-   # Atau untuk mode watch CSS: npm.cmd run watch:css
+   npm install
+   npm run build
+   # Atau untuk mode watch CSS: npm run watch:css
    ```
+
+   **PowerShell / Command Prompt (Windows):**
+   ```powershell
+   npm install
+   npm run build
+   # Atau untuk mode watch CSS: npm run watch:css
+   ```
+   *(Catatan: Jika `npm` tidak dikenali di Windows, gunakan `npm.cmd`)*
+
 5. Jalankan aplikasi menggunakan local server pilihan Anda (misal: XAMPP) dengan menunjuk dokumen root ke `public/`, atau jalankan built-in server PHP:
+
    ```bash
    php -S localhost:8000 -t public
    ```

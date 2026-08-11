@@ -24,3 +24,5 @@ database/*.sqlite
 .idea/
 .DS_Store
 Thumbs.db
+
+AGENTS.md
