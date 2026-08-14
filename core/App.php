@@ -2,9 +2,13 @@
 
 namespace Core;
 
+use App\Middlewares\AppMiddleware;
+
 class App {
 
     public function __construct() {
+        Middleware::register(AppMiddleware::class);
+
         require APP_PATH . '/routes/web.php';
 
         $url = trim($_GET['url'] ?? '', '/');

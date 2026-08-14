@@ -20,7 +20,7 @@ class Transaction {
         } catch (Exception $e) {
             $db->rollBack();
 
-            error_log($e->getMessage());
+            // error_log($e->getMessage());
 
             return false;
         }

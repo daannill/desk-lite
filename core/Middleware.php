@@ -4,48 +4,25 @@ namespace Core;
 
 class Middleware {
 
-    public static function only(array $middlewares) {
-        foreach ($middlewares as $middleware) {
-            if (method_exists(self::class, $middleware)) {
-                self::$middleware();
+    private static string $handler = '';
+
+    public static function register(string $class): void {
+        self::$handler = $class;
+    }
+
+    public static function run(array $middlewares, string $method): void {
+        foreach ($middlewares as $name => $options) {
+            if (!method_exists(self::$handler, $name)) {
+                continue;
+            }
+
+            if (isset($options['only']) && in_array($method, $options['only'], true)) {
+                self::$handler::$name();
+            } elseif (isset($options['except']) && !in_array($method, $options['except'], true)) {
+                self::$handler::$name();
+            } elseif (!isset($options['only']) && !isset($options['except'])) {
+                self::$handler::$name();
             }
         }
     }
-
-    public static function guest() {
-        if (Auth::auth()) {
-            Redirect::to('/');
-        }
-    }
-
-    public static function auth() {
-        if (Auth::guest()) {
-            Redirect::to('/login');
-        }
-    }
-
-    public static function admin() {
-        self::auth();
-
-        if (Auth::role() !== 'admin') {
-            Abort::error(403);
-        }
-    }
-
-    public static function teacher() {
-        self::auth();
-
-        if (Auth::role() !== 'teacher') {
-            Abort::error(403);
-        }
-    }
-
-    public static function validateCsrf() {
-        $token = Request::post('_token');
-
-        if (!$token || !Csrf::validate($token)) {
-            Abort::error(403);
-        }
-    }
-
 }

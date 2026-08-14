@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Core;
 
 class Controller {
@@ -10,26 +8,14 @@ class Controller {
 
     public function runMiddleware(string $method): void {
         if (Request::isPost()) {
-            Middleware::validateCsrf();
-        }
+            $token = Request::post('_token');
 
-        foreach ($this->middleware as $middleware => $options) {
-            if (!method_exists(Middleware::class, $middleware)) {
-                continue;
-            }
-
-            if (isset($options['only']) && in_array($method, $options['only'], true)) {
-                Middleware::$middleware();
-            }
-
-            if (isset($options['except']) && !in_array($method, $options['except'], true)) {
-                Middleware::$middleware();
-            }
-
-            if (!isset($options['only']) && !isset($options['except'])) {
-                Middleware::$middleware();
+            if (!$token || !Csrf::validate($token)) {
+                Abort::error(403);
             }
         }
+
+        Middleware::run($this->middleware, $method);
     }
     
     protected function view(string $view, array $data = []): void {
