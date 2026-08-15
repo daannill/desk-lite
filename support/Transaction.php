@@ -1,12 +1,15 @@
 <?php
 
-namespace Core;
+declare(strict_types=1);
 
-use Exception;
+namespace Support;
+
+use Core\Database;
+use Throwable;
 
 class Transaction {
 
-    public static function run(callable $callback) {
+    public static function run(callable $callback): bool {
         $db = Database::getInstance();
 
         try {
@@ -17,10 +20,8 @@ class Transaction {
             $db->commit();
 
             return true;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $db->rollBack();
-
-            // error_log($e->getMessage());
 
             return false;
         }

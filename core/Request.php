@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core;
 
 class Request {
 
-    public static function post(string|null $key = null, $default = null) {
+    public static function post(?string $key = null, mixed $default = null): mixed {
         if ($key === null) {
             return $_POST;
         }
@@ -12,7 +14,7 @@ class Request {
         return $_POST[$key] ?? $default;
     }
 
-    public static function get(?string $key = null, $default = null) {
+    public static function get(?string $key = null, mixed $default = null): mixed {
         if ($key === null) {
             return $_GET;
         }
@@ -20,7 +22,7 @@ class Request {
         return $_GET[$key] ?? $default;
     }
 
-    public static function file(?string $key = null, $default = null) {
+    public static function file(?string $key = null, mixed $default = null): mixed {
         if ($key === null) {
             return $_FILES;
         }
@@ -36,7 +38,7 @@ class Request {
         return $_FILES[$key]['error'] !== UPLOAD_ERR_NO_FILE;
     }
 
-    public static function hasPost(string $key) {
+    public static function hasPost(string $key): bool {
         return isset($_POST[$key]);
     }
 
@@ -44,15 +46,15 @@ class Request {
         return isset($_GET[$key]);
     }
 
-    public static function method() {
-        return $_SERVER['REQUEST_METHOD'];
+    public static function method(): string {
+        return strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
     }
 
-    public static function isPost() {
+    public static function isPost(): bool {
         return self::method() === 'POST';
     }
 
-    public static function isGet() {
+    public static function isGet(): bool {
         return self::method() === 'GET';
     }   
 }

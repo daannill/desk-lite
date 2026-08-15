@@ -1,10 +1,12 @@
 <?php
 
-namespace Core;
+declare(strict_types=1);
+
+namespace Support;
 
 class Session {
 
-    public static function set(string $key, string|array $value) {
+    public static function set(string $key, mixed $value): void {
         $keys = explode('.', $key);
         $temp = &$_SESSION;
 
@@ -22,13 +24,13 @@ class Session {
         }
     }
 
-    public static function get(string $key) {
+    public static function get(string $key, mixed $default = null): mixed {
         $keys = explode('.', $key);
-        $temp = $_SESSION;
+        $temp = $_SESSION ?? [];
 
         foreach ($keys as $segment) {
             if (!isset($temp[$segment])) {
-                return null;
+                return $default;
             }
 
             $temp = $temp[$segment];
@@ -37,11 +39,11 @@ class Session {
         return $temp;
     }
 
-    public static function has(string $key) {
+    public static function has(string $key): bool {
         return self::get($key) !== null;
     }
 
-    public static function remove(string $key) {
+    public static function remove(string $key): void {
         $keys = explode('.', $key);
         $lastKey = array_pop($keys);
         $temp = &$_SESSION;
@@ -57,11 +59,15 @@ class Session {
         unset($temp[$lastKey]);
     }
 
-    public static function destroy() {
-        session_destroy();
+    public static function destroy(): void {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
     }
 
-    public static function regenerateId() {
-        session_regenerate_id(true);
+    public static function regenerateId(bool $deleteOldSession = true): void {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id($deleteOldSession);
+        }
     }
 }

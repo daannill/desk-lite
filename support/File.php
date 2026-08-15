@@ -1,6 +1,8 @@
 <?php
 
-namespace Core;
+declare(strict_types=1);
+
+namespace Support;
 
 class File {
 
@@ -18,7 +20,7 @@ class File {
         }
 
         $extension = strtolower(
-            pathinfo($file['name'], PATHINFO_EXTENSION)
+            pathinfo((string) $file['name'], PATHINFO_EXTENSION)
         );
 
         $filename ??= bin2hex(random_bytes(16));
@@ -30,7 +32,7 @@ class File {
             $extension
         );
 
-        if (!move_uploaded_file($file['tmp_name'], $path)) {
+        if (!move_uploaded_file((string) $file['tmp_name'], $path)) {
             return false;
         }
 
@@ -49,7 +51,7 @@ class File {
         return is_file($path);
     }
 
-    public static function rename(string $from, string $to) {
+    public static function rename(string $from, string $to): bool {
         if (!file_exists($from)) {
             return false;
         }

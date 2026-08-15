@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Middlewares;
 
-use Core\Auth;
+use Support\Auth;
 use Core\Redirect;
-use Core\Abort;
+use Support\Abort;
 
 class AppMiddleware {
 

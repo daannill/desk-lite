@@ -1,19 +1,20 @@
 <?php
 
-namespace Core;
+declare(strict_types=1);
+
+namespace Support;
 
 class Validator {
 
     private static array $errors = [];
 
-    public static function validate(array $data, array $rules, ?array $attributes = null) {
+    public static function validate(array $data, array $rules, ?array $attributes = null): void {
         foreach ($rules as $field => $ruleString) {
             $fieldName = $attributes[$field] ?? ucfirst($field);
-
             $ruleList = explode('|', $ruleString);
 
             foreach ($ruleList as $rule) {
-                $value = trim($data[$field] ?? '');
+                $value = trim((string) ($data[$field] ?? ''));
 
                 if ($rule === 'required') {
                     if ($value === '') {
@@ -30,7 +31,7 @@ class Validator {
                 }
 
                 if (str_contains($rule, 'min:')) {
-                    $min = explode(':', $rule)[1];
+                    $min = (int) explode(':', $rule)[1];
 
                     if (strlen($value) < $min) {
                         self::setError($field, "$fieldName minimal $min karakter");
@@ -45,7 +46,7 @@ class Validator {
         array $files,
         array $rules,
         ?array $attributes = null
-    ) {
+    ): void {
         foreach ($rules as $field => $ruleString) {
             $fieldName = $attributes[$field] ?? ucfirst($field);
             $ruleList = explode('|', $ruleString);
@@ -66,7 +67,7 @@ class Validator {
                 }
 
                 if ($rule === 'image') {
-                    if (!str_starts_with($file['type'], 'image/')) {
+                    if (!str_starts_with((string) $file['type'], 'image/')) {
                         self::setError($field, "$fieldName harus berupa gambar");
                         break;
                     }
@@ -79,7 +80,7 @@ class Validator {
                     $allowed = explode(',', $allowed);
 
                     $extension = strtolower(
-                        pathinfo($file['name'], PATHINFO_EXTENSION)
+                        pathinfo((string) $file['name'], PATHINFO_EXTENSION)
                     );
 
                     if (!in_array($extension, $allowed, true)) {
@@ -102,31 +103,35 @@ class Validator {
         }
     }
 
-    public static function check(mixed $condition, string|array $fields, ?string $message = '') {
+    public static function check(mixed $condition, string|array $fields, ?string $message = ''): void {
         if (!$condition) {
             return;
         }
 
         if (is_array($fields)) {
             foreach ($fields as $field => $msg) {
-                self::setError($field, $msg);
+                self::setError($field, (string) $msg);
             }
 
             return;
         }
 
-        self::setError($fields, $message);
+        self::setError($fields, (string) $message);
     }
 
-    public static function fails() {
+    public static function fails(): bool {
         return !empty(self::$errors);
     }
 
-    public static function errors() {
+    public static function errors(): array {
         return self::$errors;
     }
 
-    private static function setError(string $key, string $message) {
+    public static function clear(): void {
+        self::$errors = [];
+    }
+
+    private static function setError(string $key, string $message): void {
         $keys = explode('.', $key);
         $temp = &self::$errors;
 

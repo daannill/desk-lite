@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core;
 
 use App\Middlewares\AppMiddleware;
+use Support\Abort;
 
 class App {
 
@@ -59,17 +62,17 @@ class App {
         Abort::error(404);
     }
 
-    private function runAction(array $action, $params = []) {
+    private function runAction(array $action, array $params = []): void {
         [$controllerName, $method] = $action;
 
         if (!class_exists($controllerName)) {
-            Abort::error(500);
+            Abort::error(500, "Controller [$controllerName] not found.");
         }
 
         $controller = new $controllerName();
 
         if (!method_exists($controller, $method)) {
-            Abort::error(500);
+            Abort::error(500, "Method [$method] not found in controller [$controllerName].");
         }
 
         $controller->runMiddleware($method);
